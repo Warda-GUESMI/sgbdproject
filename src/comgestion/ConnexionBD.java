@@ -10,8 +10,8 @@ public class ConnexionBD {
     "jdbc:oracle:thin:@localhost:1521:XE";
 
 
-    private static final String USER = "projetsBd";     // ou ton user
-    private static final String PASSWORD = "1234"; // ton mot de passe
+    private static final String USER = "gestion";     // ou ton user
+    private static final String PASSWORD = "gestion123"; // ton mot de passe
 
     private static Connection connection;
 

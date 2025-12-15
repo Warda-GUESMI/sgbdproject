@@ -1,3 +1,4 @@
+
 package comgestion;
 
 import Views.VueArticles;
@@ -18,16 +19,16 @@ public class MainApp extends Application {
     private Stage primaryStage;
     private BorderPane mainLayout;
 
-    // 🔹 VUES (on ne les modifie PAS)
-    private VueArticles vueArticle;
+    // Vues
+    private VueArticles vueArticles;
     private VueCommandes vueCommandes;
-    private VueLivraisons vueLivraison;
+    private VueLivraisons vueLivraisons;
 
     @Override
     public void start(Stage stage) {
         this.primaryStage = stage;
 
-        // 🔴 TEST CONNEXION ORACLE
+        // Test connexion Oracle
         if (!testConnexionBD()) {
             showErreurBD();
             return;
@@ -41,11 +42,20 @@ public class MainApp extends Application {
         mainLayout.setCenter(createWelcomeScreen());
 
         // Initialisation des vues UNE FOIS
-        vueArticle = new VueArticle();
+        vueArticles = new VueArticles();
         vueCommandes = new VueCommandes();
-        vueLivraison = new VueLivraison();
+        vueLivraisons = new VueLivraisons();
 
         Scene scene = new Scene(mainLayout, 1200, 700);
+        
+        // Chargement du CSS
+        try {
+            String css = getClass().getResource("/ressources/css/style.css").toExternalForm();
+            scene.getStylesheets().add(css);
+        } catch (Exception e) {
+            System.out.println("⚠ Fichier CSS non trouvé");
+        }
+        
         primaryStage.setScene(scene);
         primaryStage.setMaximized(true);
         primaryStage.show();
@@ -68,10 +78,11 @@ public class MainApp extends Application {
         alert.setTitle("Erreur de connexion");
         alert.setHeaderText("Connexion à la base de données impossible");
         alert.setContentText(
-                "✔ Oracle démarré\n" +
-                "✔ Listener actif\n" +
-                "✔ Service XE/PDB correct\n" +
-                "✔ Login / mot de passe corrects"
+                "Vérifiez que :\n" +
+                "✔ Oracle est démarré\n" +
+                "✔ Le Listener est actif\n" +
+                "✔ Le service XE est correct\n" +
+                "✔ Login / mot de passe sont corrects"
         );
         alert.showAndWait();
     }
@@ -142,19 +153,18 @@ public class MainApp extends Application {
     // ================== NAVIGATION ==================
 
     private void showArticlesView() {
-        mainLayout.setCenter(vueArticle.getView());
+        mainLayout.setCenter(vueArticles);
     }
 
     private void showCommandesView() {
-        mainLayout.setCenter(vueCommandes.getView());
+        mainLayout.setCenter(vueCommandes);
     }
 
     private void showLivraisonsView() {
-        mainLayout.setCenter(vueLivraison.getView());
+        mainLayout.setCenter(vueLivraisons);
     }
 
     public static void main(String[] args) {
         launch(args);
     }
 }
-
